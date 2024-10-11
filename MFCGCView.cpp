@@ -177,8 +177,6 @@ void CMFCGCView::OnDraw(CDC* pDC)
 	
 			CLine e;
 			CPoint p1, p2;
-			e.MoveTo(pDC, 0,0);
-			e.LineTo(pDC, 100,100);
 
 			//根据线条数量画图
 			for (size_t i = 0; i < LineNum; i++)
