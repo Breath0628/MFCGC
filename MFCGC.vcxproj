@@ -184,6 +184,7 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CLine.h" />
     <ClInclude Include="d2_4.h" />
     <ClInclude Include="DIALOG2_2.h" />
     <ClInclude Include="dialog2_3.h" />

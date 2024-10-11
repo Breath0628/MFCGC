@@ -45,6 +45,9 @@ public:
 	afx_msg void On32779();
 	afx_msg void On32780();
 	int nowDraw = 0;//当前绘制的图像
+	afx_msg void On32781();
+
+
 };
 
 

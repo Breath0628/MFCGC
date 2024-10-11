@@ -27,6 +27,7 @@ ON_COMMAND(ID_22, &CMainFrame::On22)
 ON_COMMAND(ID_32778, &CMainFrame::On32778)
 ON_COMMAND(ID_32779, &CMainFrame::On32779)
 ON_COMMAND(ID_32780, &CMainFrame::On32780)
+ON_COMMAND(ID_32781, &CMainFrame::On32781)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -139,4 +140,22 @@ void CMainFrame::On32780()
 	// TODO: 在此添加命令处理程序代码
 	DIALOG2_5 dlg;
 	dlg.DoModal();
+}
+
+
+void CMainFrame::On32781()
+{
+	// TODO: 展示习题3-3的绘画逻辑
+	 // 获取指向主窗口的指针
+	CMainFrame* pMainFrame = (CMainFrame*)AfxGetMainWnd();
+
+	if (pMainFrame) // 确保指针有效
+	{
+		// 修改 CMainFrame 中的 nowDraw 变量
+		pMainFrame->nowDraw = 33;
+		pMainFrame->Invalidate();
+
+	}
+
+
 }

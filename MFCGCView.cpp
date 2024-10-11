@@ -17,7 +17,7 @@
 #define new DEBUG_NEW
 #endif
 #include "MainFrm.h"
-
+#include "CLine.h"
 
 // CMFCGCView
 
@@ -28,6 +28,8 @@ BEGIN_MESSAGE_MAP(CMFCGCView, CView)
 	ON_COMMAND(ID_FILE_PRINT, &CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CView::OnFilePrintPreview)
+	ON_WM_LBUTTONUP()
+	ON_WM_RBUTTONUP()
 END_MESSAGE_MAP()
 
 // CMFCGCView 构造/析构
@@ -79,7 +81,8 @@ void CMFCGCView::OnDraw(CDC* pDC)
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
-
+	
+	//将所有的视区都修改为向上向右为正 原点为中间
 	CRect rect;//不是单纯的一个数值
 	GetClientRect(rect);
 	pDC->SetMapMode(MM_ANISOTROPIC);//变量是一种映射模式；->：指向成员运算符
@@ -98,6 +101,14 @@ void CMFCGCView::OnDraw(CDC* pDC)
 		CString txt;
 		txt.Format(_T("%d"), nowDraw);
 
+		// 获取主窗口的尺寸
+		CRect clientRect;
+		GetClientRect(&clientRect);
+
+		// 计算窗口中心
+		int centerX = clientRect.Width() / 2;
+		int centerY = clientRect.Height() / 2;
+
 		// 根据nowDraw 进行绘图
 		//pDC->TextOut(10, 10, CString("Value: ")+ txt);
 		switch (nowDraw)
@@ -105,16 +116,11 @@ void CMFCGCView::OnDraw(CDC* pDC)
 		case 24:
 		{
 			pDC->TextOut(10, 10, CString("习题2-4: "));
+			break;
 		}
 		case 25:
 
-		{	// 获取主窗口的尺寸
-			CRect clientRect;
-			GetClientRect(&clientRect);
-
-			// 计算窗口中心
-			int centerX = clientRect.Width() / 2;
-			int centerY = clientRect.Height() / 2;
+		{
 			int depth=pMainFrame->dep;
 			pDC->TextOut(10- centerX, centerY, CString("习题2-5: "));
 
@@ -162,8 +168,29 @@ void CMFCGCView::OnDraw(CDC* pDC)
 			}
 			
 			pDC->SelectObject(pOldPen);
+			break;
 		}
+		case 33:
+		{
+			//习题3-3
+			pDC->TextOut(10 - centerX, centerY, CString("习题3-3: "));
+	
+			CLine e;
+			CPoint p1, p2;
+			e.MoveTo(pDC, 0,0);
+			e.LineTo(pDC, 100,100);
 
+			//根据线条数量画图
+			for (size_t i = 0; i < LineNum; i++)
+			{
+				p1 = lineList[i][0];
+				p2 = lineList[i][1];
+				e.MoveTo(pDC, p1.x- rect.Width() / 2, -p1.y+rect.Height() / 2);
+				e.LineTo(pDC, p2.x - rect.Width() / 2, -p2.y + rect.Height() / 2);
+			}
+			
+			break;
+		}
 
 
 		default:
@@ -219,3 +246,68 @@ CMFCGCDoc* CMFCGCView::GetDocument() const // 非调试版本是内联的
 
 
 // CMFCGCView 消息处理程序
+
+
+void CMFCGCView::OnLButtonUp(UINT nFlags, CPoint point)
+{
+	// TODO:左键点击
+	
+// 获取指向主窗口的指针
+	CMainFrame* pMainFrame = (CMainFrame*)AfxGetMainWnd();
+
+	if (pMainFrame) // 确保指针有效
+	{
+		// 修改 CMainFrame 中的 nowDraw 变量
+		switch (pMainFrame->nowDraw)
+		{
+		case 33:
+		{// 获取点击的坐标
+			//CString str;
+			//str.Format(_T("右键点击坐标: X = %d, Y = %d"), point.x, point.y);
+
+			//// 显示坐标信息
+			//AfxMessageBox(str);
+
+			lineList[LineNum][0] = point;//起始点赋值
+			break;
+			
+		}
+		default:
+			break;
+		} 
+	
+	}
+
+	CView::OnLButtonUp(nFlags, point);
+}
+
+
+void CMFCGCView::OnRButtonUp(UINT nFlags, CPoint point)
+{
+	// TODO: 3-3右键点击事件
+	// 获取指向主窗口的指针
+	CMainFrame* pMainFrame = (CMainFrame*)AfxGetMainWnd();
+
+	if (pMainFrame) // 确保指针有效
+	{
+		// 修改 CMainFrame 中的 nowDraw 变量
+		switch (pMainFrame->nowDraw)
+		{
+		case 33:
+		{
+			lineList[LineNum][1] = point;//终止点赋值
+			LineNum++;
+			Invalidate();
+			break;
+	
+
+		}
+		default:
+			break;
+		}
+
+	}
+	CView::OnRButtonUp(nFlags, point);
+	
+}
+
