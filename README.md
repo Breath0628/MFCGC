@@ -6,6 +6,8 @@
 ## 习题二
   2、3、4、5。   
 ## 习题三 
+  3、4、8
+## 习题三  
   还没写
 # 持续更新中....  
 # 饱饱 如果有用点个Star好吗
@@ -14,3 +16,6 @@
 ![image](https://github.com/user-attachments/assets/35fa99e7-1c6a-4149-a2af-dadad8ece0de)
 ![image](https://github.com/user-attachments/assets/81eaf807-4af3-45ba-abf0-4133b31021b8)
 ![image](https://github.com/user-attachments/assets/1999a4ee-0241-4f0f-8f0e-2fc31dd8d3e8)
+![image](https://github.com/user-attachments/assets/55fe2464-da91-47fa-9a2a-f3efcad52fee)
+![image](https://github.com/user-attachments/assets/295c082d-4cbc-4518-839f-76703bccd0d4)
+![image](https://github.com/user-attachments/assets/3c3ba09f-3aa6-45db-975c-37bd16d22fb4)
