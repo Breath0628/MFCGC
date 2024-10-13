@@ -14,6 +14,8 @@
 
 #include "DIALOG2_2.h"
 #include "dialog2_3.h"
+#include "DIALOG3_5.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -162,6 +164,7 @@ protected:
 public:
 	afx_msg void On22();
 	afx_msg void On32778();
+	afx_msg void On32782();
 };
 
 CAboutDlg::CAboutDlg() noexcept : CDialogEx(IDD_ABOUTBOX)
@@ -176,6 +179,7 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
 	ON_COMMAND(ID_22, &CAboutDlg::On22)
 	ON_COMMAND(ID_32778, &CAboutDlg::On32778)
+	ON_COMMAND(ID_32782, &CAboutDlg::On32782)
 END_MESSAGE_MAP()
 
 // 用于运行对话框的应用程序命令
@@ -204,4 +208,12 @@ void CAboutDlg::On32778()
 	
 	dialog2_3 dlg;
 	dlg.DoModal();
+}
+
+
+void CAboutDlg::On32782()
+{// TODO:弹出3-4
+	DIALOG3_5 dlg;
+	dlg.DoModal();
+	
 }

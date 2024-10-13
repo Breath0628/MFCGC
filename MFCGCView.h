@@ -17,6 +17,8 @@ public:
 	CMFCGCDoc* GetDocument() const;
 	CPoint lineList[100][2];;//3-3左右键监听变量 最多存在100条
 	int LineNum = 0;//3-3线段数目
+	
+
 
 // 操作
 public:
@@ -46,6 +48,8 @@ public:
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+	//3-4反走样直线函数声明
+	void wuLine(CDC* pDC, CPoint p0, CPoint p1);
 };
 
 #ifndef _DEBUG  // MFCGCView.cpp 中的调试版本

@@ -189,6 +189,9 @@
     <ClInclude Include="DIALOG2_2.h" />
     <ClInclude Include="dialog2_3.h" />
     <ClInclude Include="DIALOG2_5.h" />
+    <ClInclude Include="DIALOG3_5.h" />
+    <ClInclude Include="DIALOG3_8.h" />
+    <ClInclude Include="DIALOG3_9.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="MFCGC.h" />
@@ -203,6 +206,9 @@
     <ClCompile Include="DIALOG2_2.cpp" />
     <ClCompile Include="dialog2_3.cpp" />
     <ClCompile Include="DIALOG2_5.cpp" />
+    <ClCompile Include="DIALOG3_5.cpp" />
+    <ClCompile Include="DIALOG3_8.cpp" />
+    <ClCompile Include="DIALOG3_9.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="MFCGC.cpp" />
     <ClCompile Include="MFCGCDoc.cpp" />

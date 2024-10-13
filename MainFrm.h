@@ -11,9 +11,13 @@ protected: // 仅从序列化创建
 	CMainFrame() noexcept;
 	DECLARE_DYNCREATE(CMainFrame)
 
-// 特性
+// 习题参数
 public:
 	int dep = 0;//2-5的迭代深度
+	CPoint x3_5p1, x3_5p2;//3-5 p1,p2；
+	CPoint x3_8p1, x3_8p2;//3-8 p1,p2；
+	COLORREF x3_8C1, x3_8C2; //3-8 c1,c2;
+
 // 操作
 public:
 
@@ -48,6 +52,11 @@ public:
 	afx_msg void On32781();
 
 
+	afx_msg void On32782();
+
+
+	afx_msg void On32785();
+	afx_msg void On32786();
 };
 
 

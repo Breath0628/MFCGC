@@ -14,7 +14,9 @@ IMPLEMENT_DYNAMIC(DIALOG2_2, CDialogEx)
 DIALOG2_2::DIALOG2_2(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG1, pParent)
 	, recLen(0)
+
 {
+
 
 }
 

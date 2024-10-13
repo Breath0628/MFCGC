@@ -75,6 +75,7 @@ CPoint intersection_point(double x1, double y1, double x2, double y2, double x3,
 }
 // CMFCGCView 绘图
 
+
 void CMFCGCView::OnDraw(CDC* pDC)
 {
 	CMFCGCDoc* pDoc = GetDocument();
@@ -190,7 +191,29 @@ void CMFCGCView::OnDraw(CDC* pDC)
 			break;
 		}
 
+		case 34:
+		{//习题3-4
+			CPoint x3_5p1 = pMainFrame->x3_5p1;
+			CPoint x3_5p2 = pMainFrame->x3_5p2;
+			pDC->TextOut(10 - centerX, centerY, CString("习题3-4: "));
+			wuLine(pDC, x3_5p1, x3_5p2);
+			break;
+		}
+		case 38: {
+			pDC->TextOut(10 - centerX, centerY, CString("习题3-8: "));
+			
+			CLine e;
+			e.MoveTo(pDC, pMainFrame->x3_8p1.x, pMainFrame->x3_8p1.y);
+			e.LineToColor(pDC, pMainFrame->x3_8p2.x, pMainFrame->x3_8p2.y, pMainFrame->x3_8C1, pMainFrame->x3_8C2);
 
+			break;
+		}
+		case 39:
+		{
+			pDC->TextOut(10 - centerX, centerY, CString("习题3-9: "));
+
+			break;
+		}
 		default:
 			break;
 		}
@@ -200,7 +223,132 @@ void CMFCGCView::OnDraw(CDC* pDC)
 	
 }
 
+//3-4反走样斜线段
+void CMFCGCView::wuLine(CDC* pDC,CPoint p0, CPoint p1)
+{
 
+	CPoint p, temp;
+	int dx = p1.x - p0.x;
+	int dy = p1.y - p0.y;
+	double k = (dy * 1.00) / (dx * 1.00);//计算斜率
+
+	if (dx == 0)//垂线
+	{
+		if (dy < 0)//起点在上方，调换
+		{
+			temp = p0;
+			p0 = p1;
+			p1 = temp;
+		}
+		for (p = p0; p.y < p1.y; p.y++)//主移动方向->y,不包括p1
+		{
+			pDC->SetPixelV(p.x, p.y, RGB(0, 0, 0));
+		}
+	}
+
+	else
+	{
+		double e = 0.00;//增量
+
+		if (k >= 0 && k <= 1)
+		{
+			if (dx < 0)//p1在左侧，调换
+			{
+				temp = p0;
+				p0 = p1;
+				p1 = temp;
+			}//p0在左下
+
+			for (p = p0; p.x < p1.x; p.x++)//主移动方向->x,不包括p1
+			{
+				pDC->SetPixelV(p.x, p.y, RGB(e * 255, e * 255, e * 255));
+				pDC->SetPixelV(p.x, p.y + 1, RGB((1 - e) * 255, (1 - e) * 255, (1 - e) * 255));//不同亮度值
+				e += k;
+
+				if (e >= 1.0)
+				{
+					p.y++;
+					e -= 1;
+				}
+			}
+			/*p0.x+=10;
+			p1.x+=10;
+			pDC->MoveTo(p0);
+			pDC->LineTo(p1);*/
+		}
+		else if (k > 1)
+		{
+			if (dy < 0)//p1在左侧，调换
+			{
+				temp = p0;
+				p0 = p1;
+				p1 = temp;
+			}//p0在下方
+
+			for (p = p0; p.y < p1.y; p.y++)//主移动方向->y,不包括p1
+			{
+				pDC->SetPixelV(p.x, p.y, RGB(e * 255, e * 255, e * 255));
+				pDC->SetPixelV(p.x + 1, p.y, RGB((1 - e) * 255, (1 - e) * 255, (1 - e) * 255));
+				e += 1.00 / (k * 1.00);
+
+				if (e >= 1.0)
+				{
+					p.x++;
+					e -= 1;
+				}
+			}
+		}
+
+		else if (k >= -1 && k < 0)
+		{
+			e = 0.00;
+			if (dx < 0)//p1在左上，调换
+			{
+				temp = p0;
+				p0 = p1;
+				p1 = temp;
+			}//p0在左上
+
+			for (p = p0; p.x < p1.x; p.x++)//主移动方向->x,不包括p1
+			{
+				pDC->SetPixelV(p.x, p.y, RGB(-1 * e * 255, -1 * e * 255, -1 * e * 255));
+				pDC->SetPixelV(p.x, p.y - 1, RGB((1 + e) * 255, (1 + e) * 255, (1 + e) * 255));//这里e是负数！！！
+				e += k;
+
+				if (e <= -1.0)
+				{
+					p.y--;
+					e += 1.0;
+				}
+			}
+		}
+
+		else if (k < -1)
+		{
+			if (dy > 0)//p1在上方，调换
+			{
+				temp = p0;
+				p0 = p1;
+				p1 = temp;
+			}//p0在上
+			for (p = p0; p.y > p1.y; p.y--)//主移动方向->y,不包括p1
+			{
+				pDC->SetPixelV(p.x, p.y, RGB(e * 255, e * 255, e * 255));
+				pDC->SetPixelV(p.x + 1, p.y, RGB((1 - e) * 255, (1 - e) * 255, (1 - e) * 255));
+				e += -1.0 / (k * 1.0);
+
+				if (e >= 1.0)
+				{
+					p.x++;
+					e -= 1;
+				}
+			}
+		}
+
+	}
+
+}
+//3-8颜色渐变曲线
 
 
 // CMFCGCView 打印

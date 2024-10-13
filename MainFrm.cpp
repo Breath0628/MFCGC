@@ -28,6 +28,9 @@ ON_COMMAND(ID_32778, &CMainFrame::On32778)
 ON_COMMAND(ID_32779, &CMainFrame::On32779)
 ON_COMMAND(ID_32780, &CMainFrame::On32780)
 ON_COMMAND(ID_32781, &CMainFrame::On32781)
+ON_COMMAND(ID_32782, &CMainFrame::On32782)
+ON_COMMAND(ID_32785, &CMainFrame::On32785)
+ON_COMMAND(ID_32786, &CMainFrame::On32786)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -158,4 +161,31 @@ void CMainFrame::On32781()
 	}
 
 
+}
+
+#include "DIALOG3_5.h"
+void CMainFrame::On32782()
+{	// TODO: 弹出3-5
+	DIALOG3_5 dlg;
+	dlg.DoModal();
+
+
+}
+
+
+
+#include "DIALOG3_8.h"
+void CMainFrame::On32785()
+{
+	// TODO: 弹出3-8
+	DIALOG3_8 dlg;
+	dlg.DoModal();
+}
+
+#include "DIALOG3_9.h"
+void CMainFrame::On32786()
+{
+	// TODO: 弹出3-9
+	DIALOG3_9 dlg;
+	dlg.DoModal();
 }
