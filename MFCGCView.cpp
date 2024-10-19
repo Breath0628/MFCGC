@@ -73,7 +73,100 @@ CPoint intersection_point(double x1, double y1, double x2, double y2, double x3,
 	y = (A1 * C2 - A2 * C1) / denominator;
 	return CPoint(round(x), round(y));
 }
+#include <queue>
+
+void CMFCGCView::SeedFill(CDC* pDC, int x, int y, COLORREF fillColor, COLORREF boundaryColor)
+{
+	// 获取种子点的初始颜色
+	COLORREF startColor = pDC->GetPixel(x, y);
+
+	// 如果种子点已经是填充颜色或者是边界颜色，则不进行填充
+	if (startColor == fillColor || startColor == boundaryColor)
+		return;
+
+	// 使用队列来存储需要填充的像素位置
+	std::queue<CPoint> pixelQueue;
+	pixelQueue.push(CPoint(x, y));
+
+	// 8连通方向（上下左右以及四个对角线方向）
+	int dx[8] = { -1, 1, 0, 0, -1, -1, 1, 1 };
+	int dy[8] = { 0, 0, -1, 1, -1, 1, -1, 1 };
+
+	while (!pixelQueue.empty())
+	{
+		// 从队列中取出一个点
+		CPoint point = pixelQueue.front();
+		pixelQueue.pop();
+
+		// 获取当前点的颜色
+		COLORREF currentColor = pDC->GetPixel(point.x, point.y);
+
+		// 如果当前点是起始颜色，则填充它并处理它的相邻点
+		if (currentColor == startColor)
+		{
+			// 填充当前像素
+			pDC->SetPixel(point.x, point.y, fillColor);
+
+			// 检查8个方向上的相邻像素
+			for (int i = 0; i < 8; ++i)
+			{
+				int newX = point.x + dx[i];
+				int newY = point.y + dy[i];
+
+				// 获取相邻像素的颜色
+				COLORREF neighborColor = pDC->GetPixel(newX, newY);
+
+				// 如果相邻像素的颜色不是边界颜色且不是填充颜色，则将它加入队列
+				if (neighborColor != fillColor && neighborColor != boundaryColor)
+				{
+					pixelQueue.push(CPoint(newX, newY));
+				}
+			}
+		}
+	}
+}
 // CMFCGCView 绘图
+#include <cmath>
+using namespace std;
+void CMFCGCView::FillPolygon(CDC* pDC, COLORREF GetClr, CPoint P[], int MaxX)
+{
+	COLORREF BClr = RGB(255, 255, 255);//背景色
+	COLORREF FClr = GetClr;//填充色
+	int yMin, yMax;//边的最小y值与最大y值
+	double x, y, k;//x,y当前点，k斜率的倒数
+	for (int i = 0; i < 7; i++)//循环多边形所有边
+	{
+		int j = (i + 1) % 7;
+		k = double(P[i].x - P[j].x) / double(P[i].y - P[j].y);//计算1/k
+		if (P[i].y < P[j].y)//得到每条边y的最大值与最小值
+		{
+			yMin = P[i].y;
+			yMax =P[j].y;
+			x = P[i].x;//得到x|ymin
+		}
+		else
+		{
+			yMin = (P[j].y);
+			yMax =P[i].y;
+			x = P[j].x;
+		}
+
+		for (y = yMin; y < yMax; y++)//沿每一条边循环扫描线
+		{
+			//对每一条扫描线与边的交点的右侧像素循环   
+			for (int m = x; m < MaxX; m++)
+				//MaxX为包围盒的右边界
+			{
+				if (FClr == pDC->GetPixel(m, y))		
+					pDC->SetPixelV(m, y, BClr);
+				else
+					pDC->SetPixelV(m,y, FClr);
+			}
+			x += k;
+		}
+	}
+}
+
 
 
 void CMFCGCView::OnDraw(CDC* pDC)
@@ -212,6 +305,109 @@ void CMFCGCView::OnDraw(CDC* pDC)
 		{
 			pDC->TextOut(10 - centerX, centerY, CString("习题3-9: "));
 
+			break;
+		}
+		case 43:
+		{
+			pDC->TextOut(10 - centerX, centerY, CString("习题4-3: "));
+			CRect rectLeft(-250, 200, -50, 0);  // 左边的正方形
+			CRect rectRight(50, 200, 250, 0); // 右边的正方形
+
+			    // 创建四种不同颜色的刷子来填充四个三角形
+			CBrush brush1(RGB(0, 0, 0));    // 黑色刷子
+		
+			// 定义左边正方形的四个顶点
+			POINT leftTopLeft = { rectLeft.left, rectLeft.top };        // 左上角
+			POINT leftTopRight = { rectLeft.right, rectLeft.top };      // 右上角
+			POINT leftBottomLeft = { rectLeft.left, rectLeft.bottom };  // 左下角
+			POINT leftBottomRight = { rectLeft.right, rectLeft.bottom }; // 右下角
+		
+			// 定义右边正方形的四个顶点
+			POINT rightTopLeft = { rectRight.left, rectRight.top };        // 左上角
+			POINT rightTopRight = { rectRight.right, rectRight.top };      // 右上角
+			POINT rightBottomLeft = { rectRight.left, rectRight.bottom };  // 左下角
+			POINT rightBottomRight = { rectRight.right, rectRight.bottom }; // 右下角
+			
+			// 左边正方形的2个三角形
+			POINT leftTriangle1[] = { leftTopLeft, leftTopRight, leftBottomLeft };
+			POINT leftTriangle2[] = { leftTopRight, leftBottomRight, leftBottomLeft };
+	
+			// 右边正方形的2个三角形
+			POINT rightTriangle1[] = { rightTopLeft, rightBottomLeft, rightBottomRight };
+			POINT rightTriangle2[] = { rightTopLeft, rightTopRight, rightBottomRight };
+
+			// 绘制左正方形的右对角线
+			pDC->MoveTo(leftTopRight);
+			pDC->LineTo(leftBottomLeft);
+
+			// 绘制右正方形的左对角线
+			pDC->MoveTo(rightTopLeft);
+			pDC->LineTo(rightBottomRight);
+
+			// 填充左正方形的四个三角形
+			pDC->SelectObject(&brush1);
+			pDC->Polygon(leftTriangle1, 3);  // 左上角三角形
+			pDC->SelectObject(&brush1);
+			pDC->Polygon(leftTriangle2, 3);  // 右上角三角形
+			pDC->SelectObject(&brush1);
+
+			// 填充右正方形的四个三角形
+			pDC->SelectObject(&brush1);
+			pDC->Polygon(rightTriangle1, 3);  // 左上角三角形
+			pDC->SelectObject(&brush1);
+			pDC->Polygon(rightTriangle2, 3);  // 右上角三角形
+	
+			break;
+		}
+		case 47:
+		{
+			pDC->TextOut(10 - centerX, centerY, CString("习题4-7: "));
+			CRect rect(-220, 220 ,220, -220);
+			CPoint pList[7] = 
+			{
+				CPoint(7,8),CPoint(3,12),CPoint(1,7),CPoint(3,1),
+				CPoint(6,5),CPoint(8,1),CPoint(12,9),
+			};
+			//放大40倍 坐标转换
+			for (size_t i = 0; i < 7; i++)
+			{
+				pList[i].x *= 40;
+				pList[i].y *= 40;
+				pList[i].x -= 260;
+				pList[i].y -= 260;
+			}
+			pDC->Rectangle(rect);
+			for (size_t i = 0; i < 7; i++)
+			{
+				pDC->MoveTo(pList[i]);
+				pDC->LineTo(pList[(i + 1)%7]);
+			}
+			FillPolygon(pDC,RGB(0,0,0),pList,220);
+			break;
+		}
+		case 49:
+		{
+			pDC->TextOut(10 - centerX, centerY, CString("习题4-9: "));
+			// 设置边界矩形
+			CRect rect1(-200, 0, 0, -200);
+			CRect rect2(0, 200, 200, 0);
+			// 创建一个画笔用于绘制矩形边界
+			CPen pen(PS_SOLID, 1, RGB(0, 0, 0));  // 黑色画笔
+			pDC->SelectObject(&pen);
+			// 定义填充颜色和边界颜色
+			COLORREF fillColor = RGB(0, 0, 0);   // 黑色填充
+			COLORREF boundaryColor = RGB(0, 0, 0); // 黑色边界
+
+			pDC->Rectangle(rect1);
+			pDC->Rectangle(rect2);
+			// 选定种子点
+			int seedX1 = -100;
+			int seedY1 = -100;
+			int seedX2 = 100;
+			int seedY2 = 100;
+			// 调用种子填充算法
+			SeedFill(pDC, seedX1, seedY1, fillColor, boundaryColor);
+			SeedFill(pDC, seedX2, seedY2, fillColor, boundaryColor);
 			break;
 		}
 		default:

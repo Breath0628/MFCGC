@@ -50,6 +50,10 @@ public:
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	//3-4反走样直线函数声明
 	void wuLine(CDC* pDC, CPoint p0, CPoint p1);
+	//4-7边缘填充算法声明
+	void CMFCGCView::FillPolygon(CDC* pDC, COLORREF GetClr, CPoint P[], int MaxX);
+	//4-9种子填充算法声明
+	void CMFCGCView::SeedFill(CDC* pDC, int x, int y, COLORREF fillColor, COLORREF boundaryColor);
 };
 
 #ifndef _DEBUG  // MFCGCView.cpp 中的调试版本

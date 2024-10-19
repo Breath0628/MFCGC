@@ -31,6 +31,9 @@ ON_COMMAND(ID_32781, &CMainFrame::On32781)
 ON_COMMAND(ID_32782, &CMainFrame::On32782)
 ON_COMMAND(ID_32785, &CMainFrame::On32785)
 ON_COMMAND(ID_32786, &CMainFrame::On32786)
+ON_COMMAND(ID_32788, &CMainFrame::On32788)
+ON_COMMAND(ID_32789, &CMainFrame::On32789)
+ON_COMMAND(ID_32790, &CMainFrame::On32790)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -188,4 +191,49 @@ void CMainFrame::On32786()
 	// TODO: 弹出3-9
 	DIALOG3_9 dlg;
 	dlg.DoModal();
+}
+
+
+void CMainFrame::On32788()
+{
+	// TODO: 绘制4-3 
+	CMainFrame* pMainFrame = (CMainFrame*)AfxGetMainWnd();
+
+	if (pMainFrame) // 确保指针有效
+	{
+		// 修改 CMainFrame 中的 nowDraw 变量
+		pMainFrame->nowDraw = 43;
+		pMainFrame->Invalidate();
+
+	}
+}
+
+
+void CMainFrame::On32789()
+{
+	// TODO: 绘制4-7
+	CMainFrame* pMainFrame = (CMainFrame*)AfxGetMainWnd();
+
+	if (pMainFrame) // 确保指针有效
+	{
+		// 修改 CMainFrame 中的 nowDraw 变量
+		pMainFrame->nowDraw = 47;
+		pMainFrame->Invalidate();
+
+	}
+}
+
+
+void CMainFrame::On32790()
+{
+	// TODO: 绘制4-9
+	CMainFrame* pMainFrame = (CMainFrame*)AfxGetMainWnd();
+
+	if (pMainFrame) // 确保指针有效
+	{
+		// 修改 CMainFrame 中的 nowDraw 变量
+		pMainFrame->nowDraw = 49;
+		pMainFrame->Invalidate();
+
+	}
 }
